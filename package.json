@@ -1,0 +1,24 @@
+{
+  "name": "nosaj-medium-bot",
+  "version": "1.0.0",
+  "description": "A bot that post's posts to Medium after they've been published to nosaj.io",
+  "main": "run.js",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "medium-sdk": "^0.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nosajio/nosaj-medium-bot.git"
+  },
+  "author": "Jason Howmans <hi@nosaj.io>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nosajio/nosaj-medium-bot/issues"
+  },
+  "homepage": "https://github.com/nosajio/nosaj-medium-bot#readme"
+}
