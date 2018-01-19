@@ -20,7 +20,7 @@ function diffPosts([website, medium]) {
   //  Will return an empty array if nothing is available.
   const notOnMedium = website.filter(p => {
     const postUrl = canonicalUrl(p);
-    const mediumVersion = medium.find(m => m.canonicalUrl === postUrl);
+    const mediumVersion = medium.find(m => m.webCanonicalUrl === postUrl);
     if (! mediumVersion) {
       return true;
     }
