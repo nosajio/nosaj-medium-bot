@@ -2,8 +2,9 @@ const debug = require('debug')('mediumbot:publishToMedium');
 const error = require('debug')('mediumbot:error:publishToMedium');
 const { MediumClient } = require('medium-sdk');
 const { canonicalUrl } = require('./api-client');
+const appendPostFooter = require('./post-footer');
 
-module.exports = publishToMedium;
+module.exports = { publishToMedium, publishOneToMedium };
 
 const { 
   MEDIUM_ACCESS_TOKEN, 
@@ -29,25 +30,30 @@ mediumClient.setAccessToken(MEDIUM_ACCESS_TOKEN);
  *          have already been published. This requires logic further up 
  *          the stack to distinguish between new and already published posts.
  *  @param {array} posts - An array of posts, in the same format as api.nosaj.io
- *  @return {array} posts
+ *  @return {array} responses
  */
 function publishToMedium(posts) {
   const requests = [];
-  return posts.map(p => debug(p.title));
   posts.forEach(post => requests.push( createDraft(post) ))
-  Promise.all(requests)
-    .then(responses => {
-      debug('%s posts published', responses.length());
-      process.exit();
-    });
+  return Promise.all(requests);
+}
+
+/**
+ *  Only publish one post to medium each time the bot runs.
+ *  @param {array} posts
+ *  @return {object} response - the post that was published
+ */
+function publishOneToMedium(posts) {
+  const post = posts[0];
+  return createDraft(post);
 }
 
 function createDraft(post) {
   const postData = {
     userId: MEDIUM_USER_ID,
     title: post.title,
-    contentFormat: 'markdown',
-    content: post.plain,
+    contentFormat: 'html',
+    content: appendPostFooter(post.body),
     canonicalUrl: canonicalUrl(post),
     publishStatus: 'draft',
   }

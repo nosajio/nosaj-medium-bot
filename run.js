@@ -22,12 +22,16 @@ const error = require('debug')('mediumbot:error:init');
 
 const { getPublishedPosts, getMediumPosts } = require('./api-client');
 const diffPosts = require('./diff-posts');
-const publishToMedium = require('./publish-to-medium');
+const { publishOneToMedium } = require('./publish-to-medium');
 
 //  Get posts from api.nosaj.io and medium, compare them, then upload
 //  any new posts on nosaj.io to Medium.
 Promise.all([getPublishedPosts(), getMediumPosts()])
   .then(diffPosts)
   .catch(err => { error(err) })
-  .then(publishToMedium)
-  .catch(err => { error(err) });
+  .then(publishOneToMedium)
+  .catch(err => { error(err) })
+  .then(({ title, url }) => {
+    debug('%s was published to medium @ %s', title, url);
+    process.exit();
+  });
