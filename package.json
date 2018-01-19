@@ -6,7 +6,8 @@
   "dependencies": {
     "debug": "^3.1.0",
     "dotenv": "^4.0.0",
-    "medium-sdk": "^0.0.4"
+    "medium-sdk": "^0.0.4",
+    "request": "^2.83.0"
   },
   "devDependencies": {},
   "scripts": {
