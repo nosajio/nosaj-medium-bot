@@ -10,7 +10,9 @@ const {
   MEDIUM_ACCESS_TOKEN, 
   MEDIUM_USER_ID, 
   MEDIUM_CLIENT_ID, 
-  MEDIUM_CLIENT_SECRET 
+  MEDIUM_CLIENT_SECRET,
+  // This is used for only publishing drafts on dev
+  MEDIUM_PUBLISH_TYPE
 } = process.env;
 
 //  This variable is set later, and will be the client returned by calling
@@ -55,7 +57,7 @@ function createDraft(post) {
     contentFormat: 'html',
     content: appendPostFooter(post.body),
     canonicalUrl: canonicalUrl(post),
-    publishStatus: 'draft',
+    publishStatus: MEDIUM_PUBLISH_TYPE,
   }
 
   return new Promise(resolve => {
