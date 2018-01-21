@@ -14,7 +14,7 @@ module.exports = diffPosts;
  */
 function diffPosts([website, medium]) {
   //  Add blacklisted posts to medium array
-  blacklist.forEach(url => medium.push({ canonicalUrl: url }) );
+  blacklist.forEach(url => medium.push({ webCanonicalUrl: url }) );
   
   //  Diff posts, returning only the posts that are not already on Medium.
   //  Will return an empty array if nothing is available.
