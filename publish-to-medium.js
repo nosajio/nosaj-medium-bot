@@ -2,7 +2,7 @@ const debug = require('debug')('mediumbot:publishToMedium');
 const error = require('debug')('mediumbot:error:publishToMedium');
 const { MediumClient } = require('medium-sdk');
 const { canonicalUrl } = require('./api-client');
-const appendPostFooter = require('./post-footer');
+const wrapPost = require('./post-content');
 
 module.exports = { publishToMedium, publishOneToMedium };
 
@@ -35,8 +35,11 @@ mediumClient.setAccessToken(MEDIUM_ACCESS_TOKEN);
  *  @return {array} responses
  */
 function publishToMedium(posts) {
+  if (! posts.length) {
+    return Promise.reject('No posts present');
+  }
   const requests = [];
-  posts.forEach(post => requests.push( createDraft(post) ))
+  posts.forEach(post => requests.push( publish(post) ))
   return Promise.all(requests);
 }
 
@@ -46,16 +49,22 @@ function publishToMedium(posts) {
  *  @return {object} response - the post that was published
  */
 function publishOneToMedium(posts) {
+  if (! posts.length) {
+    return Promise.reject('No posts are available to post');
+  }
   const post = posts[0];
-  return createDraft(post);
+  return publish(post);
 }
 
-function createDraft(post) {
+function publish(post) {
+  if (! post) {
+    throw new Error('No post present');
+  }
   const postData = {
     userId: MEDIUM_USER_ID,
     title: post.title,
     contentFormat: 'html',
-    content: appendPostFooter(post.body),
+    content: wrapPost(post.title, post.body),
     canonicalUrl: canonicalUrl(post),
     publishStatus: MEDIUM_PUBLISH_TYPE,
   }

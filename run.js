@@ -11,10 +11,11 @@ const { publishOneToMedium } = require('./publish-to-medium');
 //  any new posts on nosaj.io to Medium.
 Promise.all([getPublishedPosts(), getMediumPosts()])
   .then(diffPosts)
-  .catch(err => { error(err) })
+  .catch(err => Promise.reject(err))
   .then(publishOneToMedium)
-  .catch(err => { error(err) })
+  .catch(err => Promise.reject(err))
   .then(({ title, url }) => {
     debug('%s was published to medium @ %s', title, url);
     process.exit();
-  });
+  })
+  .catch(err => error(err));

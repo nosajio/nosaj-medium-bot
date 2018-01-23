@@ -5,6 +5,8 @@ const postFooter = `<hr>
   <em> Go and check it out!</em>
 </p>`;
 
-const appendPostFooter = str => `${str}\n\n${postFooter}`;
+const postHeader = title => `<h1>${title}</h1>`;
 
-module.exports = appendPostFooter
+const wrapPost = (title, body) => `${postHeader(title)}\n\n${body}\n\n${postFooter}`
+
+module.exports = wrapPost
